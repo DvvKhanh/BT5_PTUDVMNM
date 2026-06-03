@@ -37,7 +37,7 @@
 - Load lại các container  từ file nén để khôi phục các container đã xoá.
 
 # BÀI LÀM
-## 1. Lý thuyết
+# 1. Lý thuyết
 ## 1.1. Docker là gì? 
 - Docker là:
   + Docker là một nền tảng phần mềm giúp bạn building, deploying và running ứng dụng dễ dàng hơn bằng cách sử dụng các containers (trên nền tảng ảo hóa).
@@ -425,4 +425,4 @@ Máy chủ không Internet
 └─ Kiểm tra hệ thống
 ```
 
-## 2. Thực hành áp dụng
+# 2. Thực hành áp dụng
