@@ -241,7 +241,7 @@ command: sh /scripts/command.sh
 
 ### Tóm tắt các keyword được sử dụng trong docker-compose.yml
 ```
-| Keyword     | Ý nghĩa ngắn gọn                                                                                         |
+| Keyword     | Ý nghĩa                                                                                                  |
 | ----------- | -------------------------------------------------------------------------------------------------------- |
 | version     | Xác định phiên bản Docker Compose được sử dụng.                                                          |
 | services    | Khai báo các service (container) của ứng dụng như nginx, app và db.                                      |
@@ -426,3 +426,374 @@ Máy chủ không Internet
 ```
 
 # 2. Thực hành áp dụng
+## 2.1. Kiến trúc hệ thống
+```
+Giá vàng API
+      |
+      v
+ Node-RED
+      |
+      +-------------------+
+      |                   |
+      v                   v
+ MariaDB            InfluxDB
+ (realtime)         (history)
+      |
+      v
+ Flask API
+      |
+      v
+ Nginx
+      |
+      v
+ HTML + JS Dashboard
+      |
+      +---- iframe ----+
+                       |
+                       v
+                    Grafana
+
+Node-RED
+      |
+      v
+Telegram Bot
+      |
+      v
+Telegram Group
+```
+## 2.2. Cấu trúc thư mục
+```
+gold-monitor
+├── docker-compose.yml
+├── backup/
+├── flask-api/
+│   ├── app.py
+│   ├── requirements.txt
+│   └── Dockerfile
+└── nginx/
+    ├── nginx.conf
+    └── html/
+        ├── index.html
+        ├── script.js
+        └── style.css
+```
+## 2.3. Tạo project
+- Tạo thư muc: ```mkdir ~/gold_monitor```
+- Vào thư mục: ```cd ~/gold_monitor```
+
+<img width="477" height="90" alt="image" src="https://github.com/user-attachments/assets/bac681bf-402c-45d3-bae9-7b570ac40948" />
+
+- Tạo cấu trúc: ```mkdir -p flask-api nginx/html backup```
+<img width="818" height="107" alt="image" src="https://github.com/user-attachments/assets/654ac430-c67b-4947-b2d2-04e6d2dfba61" />
+
+## 2.4. Tạo docker-compose.yml
+- Gõ lệnh: ```nano docker-compose.yml```
+- Nội dung file:
+```
+services:
+
+  mariadb:
+    image: mariadb:11
+    container_name: mariadb
+    restart: always
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: golddb
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+  influxdb:
+    image: influxdb:2.7
+    container_name: influxdb
+    restart: always
+
+    ports:
+      - "8086:8086"
+
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: always
+
+    ports:
+      - "3000:3000"
+
+  nodered:
+    image: nodered/node-red
+    container_name: nodered
+    restart: always
+
+    ports:
+      - "1880:1880"
+
+  flask-api:
+    build: ./flask-api
+    container_name: flask-api
+
+    ports:
+      - "5000:5000"
+
+    depends_on:
+      - mariadb
+
+  nginx:
+    image: nginx
+    container_name: nginx
+
+    ports:
+      - "80:80"
+
+    volumes:
+      - ./nginx/html:/usr/share/nginx/html
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+
+    depends_on:
+      - flask-api
+
+volumes:
+  mariadb_data:
+  influxdb_data:
+```
+<img width="1478" height="754" alt="image" src="https://github.com/user-attachments/assets/eb9e5cb4-cb5c-4c11-a9ae-aa2973943b36" />
+
+## 2.5. Xây dựng Flask API
+- File app.py: ```nano flask-api/app.py```
+```
+from flask import Flask,jsonify
+import pymysql
+
+app = Flask(__name__)
+
+@app.route('/api/gold')
+
+def gold():
+
+    conn = pymysql.connect(
+        host='mariadb',
+        user='root',
+        password='root123',
+        database='golddb'
+    )
+
+    cur = conn.cursor()
+
+    cur.execute("""
+    SELECT price
+    FROM gold_price
+    ORDER BY id DESC
+    LIMIT 1
+    """)
+
+    row = cur.fetchone()
+
+    return jsonify({
+        "price": row[0]
+    })
+
+app.run(
+    host="0.0.0.0",
+    port=5000
+)
+```
+<img width="1476" height="758" alt="image" src="https://github.com/user-attachments/assets/80fc2c81-6788-4306-819e-5fa2604214b1" />
+
+- File requirements.txt: ```nano flask-api/requirements.txt```
+```
+flask
+pymysql
+```
+<img width="1184" height="160" alt="image" src="https://github.com/user-attachments/assets/64836920-7075-48f8-8352-ef9781fe8f2b" />
+
+- File Dockerfile: ```nano flask-api/Dockerfile```
+```
+FROM python:3.11
+
+WORKDIR /app
+
+COPY . .
+
+RUN pip install -r requirements.txt
+
+CMD ["python","app.py"]
+```
+<img width="959" height="327" alt="image" src="https://github.com/user-attachments/assets/e08da91c-0be5-4ffe-90de-7637edfcb099" />
+
+## 2.6. Website Dashboard
+- index.html: ```nano nginx/html/index.html```
+```
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>Gold Monitor</title>
+</head>
+
+<body>
+
+<h1>GIÁ VÀNG REALTIME</h1>
+
+<h2 id="gold">Loading...</h2>
+
+<hr>
+
+<h2>LỊCH SỬ GIÁ VÀNG</h2>
+
+<iframe
+src="http://localhost:3000"
+width="100%"
+height="600">
+</iframe>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
+```
+<img width="1470" height="759" alt="image" src="https://github.com/user-attachments/assets/576d7224-580d-49fa-8ff3-085817cead95" />
+
+- script.js: ```nano nginx/html/script.js```
+```
+function loadGold(){
+
+fetch('/api/gold')
+
+.then(response=>response.json())
+
+.then(data=>{
+
+document.getElementById("gold")
+.innerHTML =
+data.price + " USD";
+
+});
+
+}
+
+loadGold();
+
+setInterval(loadGold,5000);
+```
+<img width="1475" height="750" alt="image" src="https://github.com/user-attachments/assets/ccece9c8-2959-44b7-a6e8-34356e5861c5" />
+
+## 2.7. Cấu hình Nginx
+- Chạy lệnh: ```nano nginx/nginx.conf```
+```
+events {}
+
+http {
+
+ server {
+
+  listen 80;
+
+  location / {
+
+   root /usr/share/nginx/html;
+   index index.html;
+
+  }
+
+  location /api/ {
+
+   proxy_pass http://flask-api:5000;
+
+  }
+
+ }
+
+}
+```
+<img width="1473" height="756" alt="image" src="https://github.com/user-attachments/assets/9be5d570-d73d-4b20-ae62-78b76031baf2" />
+
+- Chạy Docker Compose: ```docker compose up -d```
+<img width="1476" height="215" alt="image" src="https://github.com/user-attachments/assets/2bc5a351-c4b3-4944-a8f0-37b94cf2bbc2" />
+
+- Kiểm tra: ```docker ps```
+<img width="1459" height="354" alt="image" src="https://github.com/user-attachments/assets/f8fff57d-f014-4fd5-af11-7dca53bd1c94" />
+
+## 2.7. Khởi tạo MariaDB
+- Đăng nhập: ```docker exec -it mariadb mariadb -uroot -p```
+- Nhập mật khẩu: root123
+- Chọn database: USE golddb;
+- Tạo bảng:
+```
+CREATE TABLE gold_price(
+
+ id INT AUTO_INCREMENT PRIMARY KEY,
+
+ price DOUBLE,
+
+ created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+);
+```
+<img width="957" height="531" alt="image" src="https://github.com/user-attachments/assets/2e3ce867-2f3a-4801-ae36-44bdea3af95f" />
+
+- Kiểm tra: ```SHOW TABLES;```
+<img width="396" height="225" alt="image" src="https://github.com/user-attachments/assets/47f60378-2af5-43b3-a58a-ac94f1b192ef" />
+
+## 2.8. Cấu hình Node-RED
+### Bước 1: Mở trình duyệt, truy cập: http://192.168.91.154:1880/
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/aa943b01-af0e-4f90-84b7-09b09ccf21a2" />
+
+### Bước 2: Cài các nốt cần thiết
+  + Nhấn ☰ bên phải -> Manage Palette -> Install -> Tìm và cài các node
+  + Cài:
+    + node-red-node-mysql
+<img width="878" height="618" alt="image" src="https://github.com/user-attachments/assets/e692692a-b990-4992-a189-28e5e41b720d" />
+
++ node-red-contrib-influxdb
+<img width="670" height="598" alt="image" src="https://github.com/user-attachments/assets/56c6ace9-8b92-41fc-99f3-4e0a7473bbfc" />
+
++ node-red-contrib-telegrambot
+<img width="666" height="432" alt="image" src="https://github.com/user-attachments/assets/54482f76-97ee-4a7a-8d6f-c6e6c416fd44" />
+
+### Bước 3: Flow lấy giá vàng
+- Kéo các node:
+```
+Inject
+   |
+HTTP Request
+   |
+JSON
+   |
+Function
+   |
+MySQL
+```
+- Cấu hình Inject:
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/0cfec98b-49fd-4d61-8e49-932250b2edce" />
+
+- Cấu hình http request:
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/4fde0999-b42b-4e22-b142-60c0646f432f" />
+
+- Cấu hình JSON node:
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/5a479763-fd67-4554-9322-19d1c4ea7f0c" />
+
+- Cấu hình function:
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/d06e130b-a238-4c94-bdf7-003fcadd54df" />
+
+- Cấu hình mysql:
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/a51c3efb-c167-4452-933e-a9d7b490327d" />
+
+- Kiểm tra flow: Thêm Debug
+- Sơ đồ cuối:
+
+<img width="1246" height="330" alt="image" src="https://github.com/user-attachments/assets/29f2dcd8-34a4-4304-b96f-66a522913bf9" />
+
+### Bước 4: Kiểm tra Database
+- Trên Ubuntu: ```docker exec -it mariadb mariadb -uroot -p```
+- Nhập password: root123
+- Chọn database: ```USE golddb;```
