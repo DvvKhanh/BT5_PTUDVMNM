@@ -765,35 +765,37 @@ Inject
    |
 HTTP Request
    |
-JSON
-   |
 Function
    |
 MySQL
 ```
 - Cấu hình Inject:
-
+  + Inject Node được sử dụng để kích hoạt quá trình thu thập dữ liệu tự động theo chu kỳ. Trong bài thực hành này, Inject Node được cấu hình để gửi tín hiệu kích hoạt lặp lại sau mỗi 5 giây. Mỗi lần được kích hoạt, hệ thống sẽ thực hiện việc lấy dữ liệu giá vàng mới nhất từ API và lưu vào cơ sở dữ liệu.
+  + Mục đích của Inject Node là mô phỏng cơ chế thu thập dữ liệu thời gian thực (Realtime Data Collection), giúp hệ thống liên tục cập nhật các biến động của giá vàng.
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/0cfec98b-49fd-4d61-8e49-932250b2edce" />
 
-- Cấu hình http request:
-
-<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/4fde0999-b42b-4e22-b142-60c0646f432f" />
-
-- Cấu hình JSON node:
-<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/5a479763-fd67-4554-9322-19d1c4ea7f0c" />
+- Cấu hình http request: HTTP Request Node có nhiệm vụ gửi yêu cầu HTTP đến API do Flask xây dựng.
+  + Thông số cấu hình:
+    + Phương thức (Method): GET
+    + URL: http://flask-api:5000/api/gold
+    + Return: Parsed JSON Object
+  + Khi nhận được yêu cầu từ Inject Node, HTTP Request Node sẽ gọi API Flask để lấy dữ liệu giá vàng mới nhất. API Flask tiếp tục truy vấn dữ liệu từ nguồn giá vàng trực tuyến và trả về kết quả dưới dạng JSON.
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/b1a03ae3-20b2-4d5d-b733-ef47eb4228fa" />
 
 - Cấu hình function:
-<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/d06e130b-a238-4c94-bdf7-003fcadd54df" />
+  + Function Node được sử dụng để xử lý dữ liệu JSON nhận được từ API trước khi lưu vào cơ sở dữ liệu MariaDB.
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/8a21fff1-06e9-4433-9798-576751540490" />
 
 - Cấu hình mysql:
+  + MySQL Node có nhiệm vụ kết nối đến cơ sở dữ liệu MariaDB và thực thi câu lệnh SQL do Function Node gửi tới.
+  + Thông số cấu hình:
+    + Host: mariadb
+    + Port: 3306
+    + User: root
+    + Password: điền password
+    + Database: golddb
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/a51c3efb-c167-4452-933e-a9d7b490327d" />
 
-- Kiểm tra flow: Thêm Debug
-- Sơ đồ cuối:
+<img width="1067" height="309" alt="image" src="https://github.com/user-attachments/assets/a592a9d7-3bc4-4143-8b0e-1131645fbe1d" />
 
-<img width="1246" height="330" alt="image" src="https://github.com/user-attachments/assets/29f2dcd8-34a4-4304-b96f-66a522913bf9" />
 
-### Bước 4: Kiểm tra Database
-- Trên Ubuntu: ```docker exec -it mariadb mariadb -uroot -p```
-- Nhập password: root123
-- Chọn database: ```USE golddb;```
