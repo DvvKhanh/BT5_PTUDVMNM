@@ -900,3 +900,29 @@ MySQL
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/b84c53a8-7de2-40e6-bc8d-f688d45d1058" />
 
 #### Bước 2: Tạo biểu đồ
+- Trong Dashboard -> chọn new -> chọn New Dashboard
+<img width="1106" height="658" alt="image" src="https://github.com/user-attachments/assets/7710bbab-14ad-4c93-8f58-b947a7f38dbe" />
+
+- Bấm dấu + lớn -> chọn Configure visualization
+<img width="1920" height="1205" alt="4" src="https://github.com/user-attachments/assets/21895fab-8889-4da3-8b8c-34e04469797c" />
+
+- Tạo biểu đồ:
+<img width="1920" height="1200" alt="Screenshot 2026-06-07 133948" src="https://github.com/user-attachments/assets/6e148df3-e8ab-47a8-b2df-696060ed1ed4" />
+
+#### Bước 3: Lấy link Iframe và nhúng vào Website
+- Tại màn hình Dashboard vừa tạo, chọn Gold History, trên góc phải của biểu đồ chọn dấu ba chấm -> Chọn Share -> Chọn share embed.
+<img width="1920" height="1200" alt="Screenshot 2026-06-07 134740" src="https://github.com/user-attachments/assets/4612e0d4-9126-4a78-aed4-93ab0605e5e2" />
+
+- Bỏ chọn ô Current time range.
+- Sau khi share sẽ hiện 1 đoạn mã -> copy lại
+<img width="1920" height="1205" alt="4" src="https://github.com/user-attachments/assets/6d4ad81b-22c4-452c-8b39-9a79479346d7" />
+
+- Dán đoạn mã vào file html
+<img width="1478" height="758" alt="Screenshot 2026-06-07 140659" src="https://github.com/user-attachments/assets/1a239d20-9617-41da-8517-8eeeadd4ddf4" />
+
+#### Bước 4: Kiểm tra kết quả
+- Truy cập: http://192.168.91.154/
+<img width="1920" height="1200" alt="Screenshot 2026-06-07 145721" src="https://github.com/user-attachments/assets/b0ce4c81-3f9a-43ec-a98a-c9a44d0373c4" />
+
+## 2.12. Telegram Alert (cảnh báo giá vàng)
+### Bước 1: 
