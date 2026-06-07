@@ -483,40 +483,8 @@ Máy chủ không Internet
 
 # 2. Thực hành áp dụng
 ## 2.1. Kiến trúc hệ thống
-```
-Giá vàng API
-      |
-      v
- Node-RED
-      |
-      +-------------------+
-      |                   |
-      v                   v
- MariaDB            InfluxDB
- (realtime)         (history)
-      |
-      v
- Flask API
-      |
-      v
- Nginx
-      |
-      v
- HTML + JS Dashboard
-      |
-      +---- iframe ----+
-                       |
-                       v
-                    Grafana
+<img width="1024" height="1536" alt="image" src="https://github.com/user-attachments/assets/d6f36cbd-722c-4ac3-a6e5-c016e2de87fc" />
 
-Node-RED
-      |
-      v
-Telegram Bot
-      |
-      v
-Telegram Group
-```
 ## 2.2. Cấu trúc thư mục
 ```
 gold-monitor
