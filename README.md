@@ -768,13 +768,14 @@ http {
 ```
 <img width="1473" height="756" alt="image" src="https://github.com/user-attachments/assets/9be5d570-d73d-4b20-ae62-78b76031baf2" />
 
-- Chạy Docker Compose: ```docker compose up -d```
+## 2.7. Khởi động hệ thống
+- Chạy lệnh: ```docker compose up -d```
 <img width="1476" height="215" alt="image" src="https://github.com/user-attachments/assets/2bc5a351-c4b3-4944-a8f0-37b94cf2bbc2" />
 
 - Kiểm tra: ```docker ps```
 <img width="1459" height="354" alt="image" src="https://github.com/user-attachments/assets/f8fff57d-f014-4fd5-af11-7dca53bd1c94" />
 
-## 2.7. Khởi tạo MariaDB
+## 2.8. Khởi tạo MariaDB
 - Đăng nhập: ```docker exec -it mariadb mariadb -uroot -p```
 - Nhập mật khẩu: root123
 - Chọn database: USE golddb;
@@ -795,7 +796,7 @@ CREATE TABLE gold_price(
 - Kiểm tra: ```SHOW TABLES;```
 <img width="396" height="225" alt="image" src="https://github.com/user-attachments/assets/47f60378-2af5-43b3-a58a-ac94f1b192ef" />
 
-## 2.8. Cấu hình Node-RED
+## 2.9. Cấu hình Node-RED
 ### Bước 1: Mở trình duyệt, truy cập: http://192.168.91.154:1880/
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/aa943b01-af0e-4f90-84b7-09b09ccf21a2" />
 
@@ -849,6 +850,32 @@ MySQL
     + Database: golddb
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/a51c3efb-c167-4452-933e-a9d7b490327d" />
 
-<img width="1067" height="309" alt="image" src="https://github.com/user-attachments/assets/a592a9d7-3bc4-4143-8b0e-1131645fbe1d" />
+<img width="1065" height="266" alt="image" src="https://github.com/user-attachments/assets/e0423f15-bf07-4e36-9cc0-cec6fa496903" />
 
+### Bước 4: Cấu hình InfluxDB
+- Mở trình duyệt, truy cập: http://192.168.91.154:8086/
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/ee6c4a1d-c35d-43a1-94e0-9470a2a24e45" />
 
+- Tạo tài khoản:
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/0b8f667c-c4ee-4b97-b8ae-8b037c2c2e33" />
+
+- Token -> Copy:
+<img width="1920" height="1205" alt="4" src="https://github.com/user-attachments/assets/d594db72-84e4-4ab4-beca-274597292f41" />
+
+- Cấu hình Node InfluxDB:
+  + Thêm node: influxdb out
+  + Cấu hình:
+    + URL: http://influxdb:8086
+    + Token: (token bạn đã tạo)
+    + Organization: GoldMonitor
+    + Bucket: gold_bucket
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/da00f757-228d-4d4b-b07b-9ac839b5a1d9" />
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/4765393d-bd8f-455f-92c9-7ff17c7fad5a" />
+
+- Measurement (rất quan trọng)
+  + Trong node InfluxDB: Measurement = gold
+
+👉 Đây là bảng dữ liệu trong InfluxDB
+
+### Bước 5:
