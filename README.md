@@ -890,7 +890,7 @@ MySQL
   + Name: Gold Alert Bot
   + Username (phải có bot ở cuối): gold_alert_khanh_bot
 - Sau khi đặt username thành công, BotFather sẽ trả về 1 đoạn mã token -> copy lại token
-<img width="1445" height="1032" alt="image" src="https://github.com/user-attachments/assets/244d9ca4-accc-409f-b735-518e0c5d39e4" />
+<img width="1153" height="824" alt="10" src="https://github.com/user-attachments/assets/10eea536-e66f-4b3a-bd1a-126ef3408e53" />
 
 ### Bước 2: Tạo group
 - Mở telegram, tạo group mới -> Thêm gold_alert_khanh_bot vào group
