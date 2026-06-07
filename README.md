@@ -963,7 +963,7 @@ MySQL
 ### Bước 4: Kết quả khi gửi về telegram
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/77343904-b490-4276-a661-529f45b0cdca" />
 
-## 2.13. xuất tất cả các container ra file nén
+## 2.13. Xuất tất cả các container ra file nén
 ### Bước 1: Xuất tất cả các container ra file nén
 - Để đóng gói toàn bộ môi trường Docker của hệ thống (MariaDB, InfluxDB, Grafana, Node-RED, Flask API, Nginx) thành một file nén .tar, thực hiện lệnh:
 ```docker save $(docker images -q) -o gold_backup.tar```
@@ -976,7 +976,7 @@ MySQL
 - Kết quả không còn container nào đang chạy.
 <img width="1473" height="336" alt="image" src="https://github.com/user-attachments/assets/93652ff4-f2a5-4dcd-8e80-ae365d9051c9" />
 - Truy cập website: http://192.168.91.154 sẽ không truy cập được do toàn bộ dịch vụ đã bị dừng.
-<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/22eb8cf4-63a7-48d7-bea4-f9cb944d85f0" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/e16ea375-e027-4c5e-b908-bb2357ab3027" />
 
 ### Bước 3: Load lại các container  từ file nén để khôi phục các container đã xoá
 - Sử dụng file backup đã tạo ở bước 1 để nạp lại các Docker Image: ```docker load -i gold_backup.tar```
@@ -999,6 +999,6 @@ MySQL
   + Biểu đồ Grafana vẫn hoạt động.
   + Node-RED tiếp tục thu thập dữ liệu.
   + Telegram Bot tiếp tục gửi cảnh báo khi phát hiện giá bất thường.
-<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/ffa3034b-63be-46a4-97b6-9aeeb7e11428" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/49df6c02-d926-401f-80e8-ec840258623d" />
 
 - Kết quả cho thấy hệ thống đã được khôi phục thành công từ file backup Docker mà không cần cài đặt lại các thành phần.
