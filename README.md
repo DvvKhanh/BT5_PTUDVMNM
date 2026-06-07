@@ -954,3 +954,10 @@ MySQL
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/71e6d577-c72e-41cc-8a1a-483ca8cbae40" />
 
 - Thêm node Function:
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/224a3874-febe-4639-9dc7-6e76e3f8111f" />
+
+- Node-red hoàn chỉnh
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/a88673ad-5fcb-4e8e-94f5-2c095d9ba704" />
+
+### Bước 4: Kết quả khi gửi về telegram
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/77343904-b490-4276-a661-529f45b0cdca" />
