@@ -534,11 +534,8 @@ gold-monitor
         └── style.css
 ```
 ## 2.3. Tạo project
-- Tạo thư muc: ```mkdir ~/gold_monitor```
-- Vào thư mục: ```cd ~/gold_monitor```
-
-<img width="477" height="90" alt="image" src="https://github.com/user-attachments/assets/bac681bf-402c-45d3-bae9-7b570ac40948" />
-
+- Tạo thư muc: ```mkdir ~/gold-monitor```
+- Vào thư mục: ```cd ~/gold-monitor```
 - Tạo cấu trúc: ```mkdir -p flask-api nginx/html backup```
 <img width="818" height="107" alt="image" src="https://github.com/user-attachments/assets/654ac430-c67b-4947-b2d2-04e6d2dfba61" />
 
