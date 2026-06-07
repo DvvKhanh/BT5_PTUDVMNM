@@ -486,22 +486,8 @@ Máy chủ không Internet
 <img width="1024" height="1536" alt="image" src="https://github.com/user-attachments/assets/d6f36cbd-722c-4ac3-a6e5-c016e2de87fc" />
 
 ## 2.2. Cấu trúc thư mục
-```
-gold-monitor
-├── docker-compose.yml
-├── backup/
-├── nodered/
-├── flask-api/
-│   ├── app.py
-│   ├── requirements.txt
-│   └── Dockerfile
-└── nginx/
-    ├── nginx.conf
-    └── html/
-        ├── index.html
-        ├── script.js
-        └── style.css
-```
+<img width="1254" height="1254" alt="image" src="https://github.com/user-attachments/assets/0b88d420-65b8-43ad-9d87-2a31925f49ee" />
+
 ## 2.3. Tạo project
 - Tạo thư muc: ```mkdir ~/gold-monitor```
 - Vào thư mục: ```cd ~/gold-monitor```
