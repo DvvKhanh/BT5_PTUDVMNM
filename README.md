@@ -957,7 +957,7 @@ MySQL
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/224a3874-febe-4639-9dc7-6e76e3f8111f" />
 
 - Node-red hoàn chỉnh
-<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/a88673ad-5fcb-4e8e-94f5-2c095d9ba704" />
+<img width="1197" height="490" alt="image" src="https://github.com/user-attachments/assets/ec0ee13b-db58-4fe8-82f9-37173cd22aaf" />
 
 ### Bước 4: Kết quả khi gửi về telegram
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/77343904-b490-4276-a661-529f45b0cdca" />
