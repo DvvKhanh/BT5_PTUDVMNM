@@ -852,7 +852,7 @@ MySQL
 
 <img width="1065" height="266" alt="image" src="https://github.com/user-attachments/assets/e0423f15-bf07-4e36-9cc0-cec6fa496903" />
 
-### Bước 4: Cấu hình InfluxDB
+### 2.10. Cấu hình InfluxDB
 - Mở trình duyệt, truy cập: http://192.168.91.154:8086/
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/ee6c4a1d-c35d-43a1-94e0-9470a2a24e45" />
 
@@ -866,10 +866,10 @@ MySQL
   + Thêm node: influxdb out
   + Cấu hình:
     + URL: http://influxdb:8086
-    + Token: (token bạn đã tạo)
+    + Token: (token vừa đã tạo)
     + Organization: GoldMonitor
     + Bucket: gold_bucket
-<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/da00f757-228d-4d4b-b07b-9ac839b5a1d9" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/ce24cb44-4740-4031-94e1-59363e444d6b" />
 
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/4765393d-bd8f-455f-92c9-7ff17c7fad5a" />
 
@@ -878,4 +878,25 @@ MySQL
 
 👉 Đây là bảng dữ liệu trong InfluxDB
 
-### Bước 5:
+- Kiểm tra dữ liệu trên InfluxDB:
+  + Trong giao diện InfluxDB -> Data Explorer -> Chọn gold_bucket
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/afd09233-2b87-4fea-9a9d-33ab76614c3d" />
+
+### 2.11. Cấu hình Grafana – hiển thị biểu đồ
+#### Bước 1: Mở trình duyệt, truy cập: http://192.168.91.154:3000/
+- Đăng nhập tài khoản + đổi mật khẩu:
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/d7fe0417-89f7-499b-8f2c-2379ff5ad50c" />
+
+- Add Data Source: Connections -> Add Data Source
+  + Chọn: InfluxDB
+  + Cấu hình:
+    + URL: http://influxdb:8086
+    + Query Language: Flux (hoặc InfluxQL tùy version)
+    + Organization: GoldMonitor
+    + Bucket: gold_bucket
+    + Token: TOKEN đã tạo
+<img width="1920" height="1205" alt="4" src="https://github.com/user-attachments/assets/c097fcb3-7526-416d-94b2-50886cf0d7b0" />
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/b84c53a8-7de2-40e6-bc8d-f688d45d1058" />
+
+#### Bước 2: Tạo biểu đồ
