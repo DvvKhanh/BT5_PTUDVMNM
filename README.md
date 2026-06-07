@@ -920,9 +920,37 @@ MySQL
 - Dán đoạn mã vào file html
 <img width="1478" height="758" alt="Screenshot 2026-06-07 140659" src="https://github.com/user-attachments/assets/1a239d20-9617-41da-8517-8eeeadd4ddf4" />
 
+- Sửa file docker-compose.yml để cho phép nhúng iframe
+<img width="520" height="369" alt="Screenshot 2026-06-07 150301" src="https://github.com/user-attachments/assets/b8d0be1b-184a-4da4-98be-3e2be719900f" />
+
 #### Bước 4: Kiểm tra kết quả
 - Truy cập: http://192.168.91.154/
 <img width="1920" height="1200" alt="Screenshot 2026-06-07 145721" src="https://github.com/user-attachments/assets/b0ce4c81-3f9a-43ec-a98a-c9a44d0373c4" />
 
 ## 2.12. Telegram Alert (cảnh báo giá vàng)
-### Bước 1: 
+### Bước 1: Tạo bot Telegram
+- Trong Telegram tìm: @BotFather
+- Tạo bot: Gõ lệnh /newbot
+- Bot sẽ hỏi:
+  + Name: Gold Alert Bot
+  + Username (phải có bot ở cuối): gold_alert_khanh_bot
+- Sau khi đặt username thành công, BotFather sẽ trả về 1 đoạn mã token -> copy lại token
+<img width="1445" height="1032" alt="image" src="https://github.com/user-attachments/assets/244d9ca4-accc-409f-b735-518e0c5d39e4" />
+
+### Bước 2: Tạo group
+- Mở telegram, tạo group mới -> Thêm gold_alert_khanh_bot vào group
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/82bb4b6a-1c69-420a-b9da-67fef89d9b15" />
+
+- Cấp quyền cho bot:
+  + Nhấn vào biểu tượng ✏️ -> chọn Administrators -> chọn Bot
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/65f389e4-91d9-4c6e-9fec-b1f7ade95f64" />
+
+### Bước 3: Cấu hình Node-RED Telegram node
+- Kéo 2 node: telegram sender và function
+- Cấu hình bot trong Node-red:
+  + Bot-Name: Tên tùy ý.
+  + Token: Dán mã token Bot Telegram (Lấy từ BotFather trên Telegram).
+- Nhấn Add -> Done
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/71e6d577-c72e-41cc-8a1a-483ca8cbae40" />
+
+- Thêm node Function:
