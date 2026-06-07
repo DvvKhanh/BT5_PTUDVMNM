@@ -522,6 +522,7 @@ Telegram Group
 gold-monitor
 ├── docker-compose.yml
 ├── backup/
+├── nodered/
 ├── flask-api/
 │   ├── app.py
 │   ├── requirements.txt
@@ -961,3 +962,43 @@ MySQL
 
 ### Bước 4: Kết quả khi gửi về telegram
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/77343904-b490-4276-a661-529f45b0cdca" />
+
+## 2.13. xuất tất cả các container ra file nén
+### Bước 1: Xuất tất cả các container ra file nén
+- Để đóng gói toàn bộ môi trường Docker của hệ thống (MariaDB, InfluxDB, Grafana, Node-RED, Flask API, Nginx) thành một file nén .tar, thực hiện lệnh:
+```docker save $(docker images -q) -o gold_backup.tar```
+- Kết quả sẽ tạo ra file: gold_backup.tar
+<img width="969" height="87" alt="image" src="https://github.com/user-attachments/assets/132de9bd-d9ee-484e-a34a-c85b1b08a184" />
+
+### Bước 2: Xóa mọi container đang chạy
+- Dừng và xóa toàn bộ các container của hệ thống bằng lệnh: ```docker compose down```
+- Kiểm tra lại: ```docker ps```
+- Kết quả không còn container nào đang chạy.
+<img width="1473" height="336" alt="image" src="https://github.com/user-attachments/assets/93652ff4-f2a5-4dcd-8e80-ae365d9051c9" />
+- Truy cập website: http://192.168.91.154 sẽ không truy cập được do toàn bộ dịch vụ đã bị dừng.
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/22eb8cf4-63a7-48d7-bea4-f9cb944d85f0" />
+
+### Bước 3: Load lại các container  từ file nén để khôi phục các container đã xoá
+- Sử dụng file backup đã tạo ở bước 1 để nạp lại các Docker Image: ```docker load -i gold_backup.tar```
+<img width="1099" height="244" alt="image" src="https://github.com/user-attachments/assets/e89b3c44-541c-46ed-ab02-c4804b7d019f" />
+- Sau khi thực hiện thành công, các image cần thiết của hệ thống sẽ được khôi phục.
+
+### Bước 4: Khởi động lại toàn bộ hệ thống
+- Sau khi load xong, chạy lại toàn bộ hệ thống bằng lệnh: ```docker compose up -d```
+<img width="1482" height="448" alt="image" src="https://github.com/user-attachments/assets/fcf022fc-d682-49e3-9be6-7713f1f7ba02" />
+
+- Kiểm tra: ```docker ps```
+<img width="1472" height="632" alt="image" src="https://github.com/user-attachments/assets/ada60f7d-380f-4406-853c-7574dce8aa29" />
+
+- Kết quả sẽ hiển thị các container: mariadb, influxdb, grafana, nodered, flask-api, nginx đều ở trạng thái Running.
+
+### Bước 5: Kiểm tra kết quả
+- Mở trình duyệt truy cập: http://192.168.91.154
+- Hệ thống sẽ hoạt động trở lại như ban đầu:
+  + Hiển thị giá vàng realtime.
+  + Biểu đồ Grafana vẫn hoạt động.
+  + Node-RED tiếp tục thu thập dữ liệu.
+  + Telegram Bot tiếp tục gửi cảnh báo khi phát hiện giá bất thường.
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/ffa3034b-63be-46a4-97b6-9aeeb7e11428" />
+
+- Kết quả cho thấy hệ thống đã được khôi phục thành công từ file backup Docker mà không cần cài đặt lại các thành phần.
