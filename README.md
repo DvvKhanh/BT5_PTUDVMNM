@@ -66,7 +66,7 @@
 ## 1.2. Các keyword được sử dụng trong docker-compose.yml
 ### Cấu trúc tổng quát:
 ```
-version: '3.9'
+version: '3.8'
 
 services:
   app:
@@ -82,7 +82,7 @@ volumes:
 - Ý nghĩa: Là version docker compose mà chúng ta sử dụng. Ở đây chúng ta đang sử dụng version 3. (Lưu ý: mỗi version sẽ có sự khác nhau, version khác nhau sẽ có những option khác nhau).
 - Ví dụ:
 ```
-version: '3.9'
+version: '3.8'
 ```
 ### Services:
 - Ý nghĩa: Là khu vực khai báo các services cần thiết cho ứng dụng
@@ -257,6 +257,62 @@ command: sh /scripts/command.sh
 | restart     | Thiết lập chính sách tự khởi động lại container khi xảy ra lỗi.                                          |
 | volumes     | Lưu trữ và đồng bộ dữ liệu giữa container và máy host, tránh mất dữ liệu khi container dừng hoặc bị xóa. |
 | command     | Chỉ định lệnh được thực thi khi container khởi động.                                                     |
+```
+
+### Ví dụ hoàn chỉnh
+```
+version: "3.8"
+
+services:
+  nginx:
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+      args:
+        - HOST=${HOST}
+    depends_on:
+      - app
+    ports:
+      - 80:80
+      - 443:443
+    env_file:
+      - .env
+    networks:
+     - my_network
+
+  app:
+    depends_on:
+      - db
+    env_file:
+      - .env
+    ports:
+      - 3000:3000
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    volumes:
+      - .:/app
+      - bundle_data:/bundle
+    command: sh /scripts/command.sh
+    stdin_open: true
+    tty: true
+
+  db:
+    image: mysql:5.7
+    restart: on-failure
+    env_file:
+      - .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DATABASE_NAME}
+      - MYSQL_USER=${DATABASE_USERNAME}
+      - MYSQL_PASSWORD=${DATABASE_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
+  bundle_data:
 ```
 
 ## 1.3. Ưu điểm khi triển app sử dụng docker là gì?
